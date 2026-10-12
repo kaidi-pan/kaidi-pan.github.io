@@ -204,7 +204,7 @@ a:focus-visible {
 
 p { margin: 0 0 1em; max-width: 36em; }
 
-.hanzi { font-family: var(--hanzi); font-size: 0.95em; }
+.hanzi { font-family: var(--hanzi); font-size: 0.95em; white-space: nowrap; }
 .ipa { white-space: nowrap; }
 
 hr {
