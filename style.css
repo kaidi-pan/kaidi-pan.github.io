@@ -1,0 +1,294 @@
+/* Layout: one column of reading text with a hanging margin on the left for
+   example numbers, the photo and section names, the way a linguistics paper
+   sets its numbered examples. On phones the margin folds away and everything
+   stacks. */
+
+:root {
+  /* Colour: cool paper, dark ink, blue-black fountain-pen accent */
+  --paper: #f7f8fa;
+  --ink: #1b2230;
+  --muted: #5b6577;
+  --rule: #dce0e7;
+  --accent: #2b4a8b;
+  --todo-bg: #fff0a6;
+  --todo-ink: #3d3300;
+
+  /* Type: Gentium, the typeface linguists use for examples and IPA */
+  --serif: "Gentium Book Plus", "Gentium Plus", "Charis SIL", Georgia, "Times New Roman", serif;
+  --hanzi: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --step--1: 1rem;
+  --step-0: 1.1875rem;
+  --step-1: 1.375rem;
+  --step-3: 2.75rem;
+
+  --margin-col: 11rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121620;
+    --ink: #e3e7ee;
+    --muted: #9aa4b5;
+    --rule: #2a3140;
+    --accent: #9fb6ec;
+    --todo-bg: #4a4214;
+    --todo-ink: #fff4c2;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #121620;
+  --ink: #e3e7ee;
+  --muted: #9aa4b5;
+  --rule: #2a3140;
+  --accent: #9fb6ec;
+  --todo-bg: #4a4214;
+  --todo-ink: #fff4c2;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--step-0);
+  line-height: 1.62;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent); color: var(--paper); }
+
+.page {
+  max-width: 55rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  padding-block: 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* ---------- Links ---------- */
+
+a {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Header ---------- */
+
+.masthead { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.masthead h1 {
+  margin: 0;
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.masthead h1 a { color: inherit; text-decoration: none; }
+
+.role { margin: 0; font-style: italic; color: var(--muted); }
+
+.site-nav ul {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  font-size: var(--step--1);
+}
+.site-nav a { color: var(--ink); text-decoration-color: var(--rule); }
+.site-nav a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.site-nav a[aria-current="page"] { text-decoration-color: var(--ink); }
+
+/* ---------- Margin grid (shared by the example and every section) ---------- */
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.6rem;
+}
+
+@media (min-width: 48rem) {
+  .row {
+    grid-template-columns: var(--margin-col) minmax(0, 1fr);
+    column-gap: 2rem;
+    align-items: baseline;
+  }
+  .row > .body { grid-column: 2; }
+  .row.intro { align-items: start; }
+}
+
+/* ---------- Example (1) ---------- */
+
+.example {
+  margin: 0;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: baseline;
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+@media (min-width: 48rem) {
+  .example { grid-template-columns: var(--margin-col) minmax(0, 1fr); column-gap: 2rem; }
+}
+
+.exnum { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.ex-items { list-style: none; margin: 0; padding: 0; }
+.ex-items li {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr);
+}
+.ex-items li > span:first-child { color: var(--muted); }
+
+/* ---------- Photo ---------- */
+
+.portrait {
+  margin: 0 0 0.6rem;
+  max-width: var(--margin-col);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 2px;
+}
+.portrait figcaption { font-size: var(--step--1); font-style: italic; color: var(--muted); }
+
+/* ---------- Sections ---------- */
+
+.row > h2 {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.body { min-width: 0; }
+.body > :first-child { margin-top: 0; }
+.body > :last-child { margin-bottom: 0; }
+
+p { margin: 0 0 1em; max-width: 36em; }
+
+.hanzi { font-family: var(--hanzi); font-size: 0.95em; }
+.ipa { white-space: nowrap; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 1.75rem 0;
+  max-width: 36em;
+}
+
+h3.group {
+  margin: 0 0 0.5rem;
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--muted);
+}
+.body > * + h3.group { margin-top: 1.9rem; }
+hr + h3.group { margin-top: 0 !important; }
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 36em;
+}
+
+.note { color: var(--muted); }
+
+.courses { gap: 1rem; }
+.courses li { display: flex; flex-direction: column; }
+.courses .course { font-size: var(--step-1); line-height: 1.35; }
+.courses .note { font-size: var(--step--1); }
+
+/* ---------- Footer ---------- */
+
+.colophon {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+.colophon p { margin: 0; }
+
+/* ---------- Jokes page ---------- */
+
+.epigraph { margin: 1.25rem 0 0; max-width: 34em; }
+.epigraph p:first-child { font-size: var(--step-1); line-height: 1.45; margin-bottom: 0.35rem; }
+
+.joke-list { display: flex; flex-direction: column; }
+
+.joke {
+  padding-block: 1.75rem;
+  border-top: 1px solid var(--rule);
+}
+.joke:first-child { border-top: 0; padding-top: 0; }
+.joke:last-child { padding-bottom: 0; }
+
+.joke > .label {
+  margin: 0;
+  font-size: var(--step--1);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+.joke .body p { margin: 0 0 0.55em; }
+.joke .body p.variant { margin-top: 1.2rem; }
+.joke .body .source,
+.epigraph .source { color: var(--muted); font-size: var(--step--1); }
+
+/* ---------- Placeholders you still need to fill in ---------- */
+
+mark.todo {
+  background: var(--todo-bg);
+  color: var(--todo-ink);
+  padding: 0.05em 0.25em;
+  border-radius: 2px;
+  font-size: 0.92em;
+}
+
+@media print {
+  .site-nav { display: none; }
+  body { background: #fff; color: #000; }
+}
